@@ -11,20 +11,20 @@
         android:id="@+id/TVWordLabel_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:text="@string/my_words"
         android:textColor="@color/colorWhite"
         android:textSize="30sp"
         android:textStyle="normal|bold"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/LVmainActivity_main"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
         android:id="@+id/LVmainActivity_main"
-        android:layout_width="0dp"
-        android:layout_height="480dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="480dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="5dp"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginEnd="5dp"
@@ -33,22 +33,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TVWordLabel_main" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <Button
         android:id="@+id/btn_Exit_main"
-        android:text="@string/Exit"
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:textColor="@color/colorBlack"
         android:background="@color/colorAccent"
+        android:text="@string/Exit"
+        android:textColor="@color/colorBlack"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LVmainActivity_main" />
+        app:layout_constraintStart_toEndOf="@+id/LVmainActivity_main" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

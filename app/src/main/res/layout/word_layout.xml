@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/IVWordImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@color/colorAccent"
+        android:contentDescription="@string/wordImage" />
+
+    <LinearLayout
+        android:id="@+id/emptySpace"
+        android:layout_width="15dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="160dp"
+        android:layout_height="100dp"
+
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/TVWordLabel"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/wordName"
+            android:background="@color/colorAccent"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/TVWordPronunciation"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Pronunciation"
+            android:background="@color/colorAccent"
+            android:textColor="@color/colorBlack"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="160dp"
+        android:layout_height="100dp"
+
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/TVUserWordRatingLabel"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/TVUserRating"
+            android:background="@color/colorAccent"
+            android:textColor="@color/colorBlack"
+            android:textSize="60dp"
+            android:textAlignment="center"
+            android:layout_gravity="center"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

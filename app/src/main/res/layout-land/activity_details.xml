@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".DetailsActivity">
+
+    <ImageView
+        android:id="@+id/IVWordImage_details"
+        android:layout_width="325dp"
+        android:layout_height="175dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:background="@android:color/background_light"
+        android:contentDescription="@string/wordImage"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/TVWordName_details"
+        android:layout_width="325dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/wordName"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/IVWordImage_details" />
+
+    <TextView
+        android:id="@+id/TVWordPronunciation_details"
+        android:layout_width="325dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="@string/wordPronunciation"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="26sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toStartOf="@+id/TVuserWordRating_details"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TVWordName_details" />
+
+    <TextView
+        android:id="@+id/TVuserWordRating_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:text="@string/TVUserRating"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="45sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/TVWordName_details"
+        app:layout_constraintStart_toStartOf="@+id/TVWordName_details"
+        app:layout_constraintTop_toTopOf="@+id/TVWordPronunciation_details" />
+
+    <TextView
+        android:id="@+id/TVWordDescriptionLabel_details"
+        android:layout_width="325dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/wordDescription"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/IVWordImage_details"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/TVWordDescription_details"
+        android:layout_width="325dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:scrollbars="vertical"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/IVWordImage_details"
+        app:layout_constraintTop_toBottomOf="@+id/TVWordDescriptionLabel_details" />
+
+    <TextView
+        android:id="@+id/TVnotesLabel_details"
+        android:layout_width="325dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/notes"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/IVWordImage_details"
+        app:layout_constraintTop_toBottomOf="@+id/TVWordDescription_details" />
+
+    <TextView
+        android:id="@+id/TVWordNotes_details"
+        android:layout_width="325dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:scrollbars="vertical"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/IVWordImage_details"
+        app:layout_constraintTop_toBottomOf="@+id/TVnotesLabel_details" />
+
+    <Button
+        android:id="@+id/btn_Cancel_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="@string/cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_Edit_details"
+        app:layout_constraintStart_toEndOf="@+id/TVuserWordRating_details" />
+
+    <Button
+        android:id="@+id/btn_Edit_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/edit"
+        app:layout_constraintBaseline_toBaselineOf="@id/btn_Cancel_details"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
