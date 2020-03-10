@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Assignment2 au547352 F20 Word Learner 2</string>
+    <string name="my_words">My Words:</string>
+    <string name="Exit">Exit</string>
+    <string name="wordImage">Image of word:</string>
+    <string name="wordName">Name of word:</string>
+    <string name="Pronunciation">Pronunciation</string>
+    <string name="wordPronunciation">Pronunciation of word:</string>
+    <string name="TVUserRating" translatable="false">0.0</string>
+    <string name="wordDescription">Description:</string>
+    <string name="notes">Notes:</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit">Edit</string>
+    <string name="wordRating">Word Rating:</string>
+    <string name="insertNotes">Insert notes here</string>
+    <string name="ok" translatable="false">OK</string>
+</resources>

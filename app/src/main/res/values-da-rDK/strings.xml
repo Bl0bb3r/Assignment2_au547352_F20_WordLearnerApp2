@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Assignment2_au547352_F20_WordLearnerApp2</string>
+    <string name="my_words">Mine Ord:</string>
+    <string name="Exit">Luk</string>
+    <string name="wordImage">Billede af ord:</string>
+    <string name="wordName">Navnet på ordet:</string>
+    <string name="Pronunciation">Udtalelse</string>
+    <string name="wordPronunciation">Udtalelse af ordet:</string>
+    <string name="wordDescription">Beskrivelse:</string>
+    <string name="notes">Notater:</string>
+    <string name="cancel">Afbryd</string>
+    <string name="edit">Ret</string>
+    <string name="wordRating">Ord vurdering:</string>
+    <string name="insertNotes">Indsæt notater her:</string>
+</resources>
