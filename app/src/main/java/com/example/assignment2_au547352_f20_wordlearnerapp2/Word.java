@@ -2,6 +2,10 @@ package com.example.assignment2_au547352_f20_wordlearnerapp2;
 
 import android.content.Context;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+@Entity(tableName = "words")
 public class Word implements Serializable {
 
     private String name;
@@ -17,11 +22,10 @@ public class Word implements Serializable {
     private Double userRating;
     private String notes;
     private int image;
+    @PrimaryKey (autoGenerate = true)
     private int ID;
 
-
-    //Dummy data
-
+    @Ignore
     public Word() {
         this.name = "word";
         this.pronunciation = "wuhd";
