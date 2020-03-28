@@ -1,14 +1,24 @@
 package com.example.assignment2_au547352_f20_wordlearnerapp2;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.app.Activity;
+import android.app.job.JobService;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -19,23 +29,32 @@ public class MainActivity extends AppCompatActivity {
     private WordArrayAdapter wordListAdaptor;
     private ListView wordListView;
     private Word selectedWord;
-    private Word serviceWord;
+    private WordService wordService;
+    private EditText searchFieldET;
+    private Button BtnAdd;
     private Button BtnExit;
 
     private int wordIndex;
 
+    private BroadcastReceiver receiver;
+    private ServiceConnection serviceConnection;
+    private boolean isBound = false;
+
+
     static final int REQUEST_EDIT = 1;
+    static final int REQUEST_WORD = 2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        serviceWord = new Word();
+        wordService = new WordService();
         wordList = new ArrayList<>();
 
         // Retrieving Wordlist
-        wordList = serviceWord.GetWordList(getApplicationContext());
+        //wordList = serviceWord.GetWordList(getApplicationContext());
 
         // Update listview on rotation of phone
         if(savedInstanceState != null) {
@@ -50,10 +69,34 @@ public class MainActivity extends AppCompatActivity {
         wordListAdaptor = new WordArrayAdapter(this, wordList);
         MatchObjectWithComponents();
         AddEventsToComponents();
+        setWordService();
+        startService();
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver,new IntentFilter("Update wordList"));
     }
+
+    //region Lifecycle stuff
+    @Override
+    protected void onResume(){
+        super.onResume();
+        startService();
+    }
+    @Override
+    protected void onStart(){
+        super.onStart();
+        bindService();
+    }
+    @Override
+    protected void onStop(){
+        super.onStop();
+        unbindService();
+    }
+
+    //endregion
 
     @Override
     public void onBackPressed(){
+        unbindService();
         finish();
     }
 
@@ -66,15 +109,23 @@ public class MainActivity extends AppCompatActivity {
 
                     Word changedWord = (Word)data.getSerializableExtra("passChangesToMain");
                     wordList.set(wordIndex,changedWord);
+                    wordService.addWord(changedWord);
                     ((BaseAdapter)wordListView.getAdapter()).notifyDataSetChanged();
                 }
+                break;
+            case REQUEST_WORD:
+                ((BaseAdapter)wordListView.getAdapter()).notifyDataSetChanged();
                 break;
         }
     }
 
+    //region Component Handlers
     private void MatchObjectWithComponents() {
         BtnExit = findViewById(R.id.btn_Exit_main);
+        BtnAdd = findViewById(R.id.btn_Add_main);
         wordListView = findViewById(R.id.LVmainActivity_main);
+        searchFieldET = findViewById(R.id.ETsearchField_main);
+
     }
 
     private void AddEventsToComponents() {
@@ -85,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View v, int i, long l) {
                 Intent intent = new Intent(MainActivity.this,DetailsActivity.class);
                 selectedWord = wordList.get(i);
+                unbindService();
                 intent.putExtra("wordInput",selectedWord);
                 startActivityForResult(intent, REQUEST_EDIT);
                 wordIndex = i;
@@ -94,11 +146,52 @@ public class MainActivity extends AppCompatActivity {
         BtnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                unbindService();
                 finish();
             }
         });
+
+        //Broadcast receiver calling when list updated through service
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                wordList.clear();
+                wordList = (ArrayList<Word>)wordService.getAllWords();
+                wordListAdaptor.Update(wordList);
+                ((BaseAdapter)wordListView.getAdapter()).notifyDataSetChanged();
+                Log.i("BRN","Broadcast notification");
+            }
+        };
     }
 
+    //endregion
+
+    private void setWordService(){
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                wordService = ((WordService.WordBinder)service).getService();
+                wordList = (ArrayList<Word>)wordService.getAllWords();
+
+                // If loop - should update if wordList empty - inserting words including searchKey:"School"
+                if (wordList.size() == 0){
+                    wordService.insertWords(wordService.GetWordList(getApplicationContext()));
+                    wordService.GetAPIWords("School",getApplicationContext(),true);
+                }
+                wordListAdaptor.Update(wordList);
+                ((BaseAdapter)wordListView.getAdapter()).notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                wordService = null;
+            }
+        };
+    }
+
+    // on save instance for saving state, used to update content and prevent refreshing entire app
+    // should save users edits and position in app
     @Override
     protected void onSaveInstanceState(Bundle outstate) {
 
@@ -108,4 +201,27 @@ public class MainActivity extends AppCompatActivity {
 
         super.onSaveInstanceState(outstate);
     }
+
+    //region Service bindings
+    private void bindService(){
+        Intent serviceIntent = new Intent(MainActivity.this, WordService.class);
+        bindService(serviceIntent,serviceConnection, Context.BIND_AUTO_CREATE);
+        isBound = true;
+    }
+
+    private void unbindService(){
+        if (isBound){
+            unbindService(serviceConnection);
+            isBound = false;
+        }
+    }
+
+    private void startService(){
+        Intent serviceIntent = new Intent(MainActivity.this,WordService.class);
+        startService(serviceIntent);
+        bindService();
+    }
+
+    //endregion
+
 }

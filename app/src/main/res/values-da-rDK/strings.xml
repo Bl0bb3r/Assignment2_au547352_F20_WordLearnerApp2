@@ -13,4 +13,9 @@
     <string name="edit">Ret</string>
     <string name="wordRating">Ord vurdering:</string>
     <string name="insertNotes">Indsæt notater her:</string>
+    <string name="search">Søg:</string>
+    <string name="add">Tilføj</string>
+    <string name="searchbar">Søg her…</string>
+    <string name="update">Opdater</string>
+    <string name="delete">Slet</string>
 </resources>

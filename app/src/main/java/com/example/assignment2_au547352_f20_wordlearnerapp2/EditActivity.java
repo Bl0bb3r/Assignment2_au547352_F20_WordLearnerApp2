@@ -1,25 +1,35 @@
 package com.example.assignment2_au547352_f20_wordlearnerapp2;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EditActivity extends AppCompatActivity {
 
     private Button btnCancel;
-    private Button btnOK;
+    private Button btnUpdate;
     private TextView TVwordName;
     private TextView TVuserWordRating;
     private SeekBar SBuserWordRating;
     private EditText ETnotes;
+
+    private Boolean isBound = false;
+    private ServiceConnection serviceConnection;
+    private WordService wordService;
+
 
     Word myWord;
 
@@ -33,11 +43,19 @@ public class EditActivity extends AppCompatActivity {
         }
         MatchObjectsWithComponents();
         AddEventsToComponents();
+        setServiceConnection();
+        bindService();
         UpdateView();
     }
 
     @Override
     public void onBackPressed() { finish(); }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService();
+    }
 
     private void AddEventsToComponents() {
         btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -49,13 +67,14 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        btnOK.setOnClickListener(new View.OnClickListener() {
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 myWord.setNotes(ETnotes.getText().toString());
                 Intent sendIntent = new Intent();
                 sendIntent.putExtra("passChangesToDetails", myWord);
                 setResult(Activity.RESULT_OK,sendIntent);
+                unbindService(); //TODO 50-50
                 finish();
             }
         });
@@ -79,6 +98,36 @@ public class EditActivity extends AppCompatActivity {
         });
     }
 
+    private void setServiceConnection(){
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                wordService = ((WordService.WordBinder)service).getService();
+                isBound = true;
+                Toast.makeText(getApplicationContext(),"Service connected",Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                isBound = false;
+                Toast.makeText(getApplicationContext(),"Service disconnected",Toast.LENGTH_LONG);
+            }
+        };
+    }
+
+    private void bindService(){
+        Intent serviceIntent = new Intent(EditActivity.this,WordService.class);
+        bindService(serviceIntent,serviceConnection, Context.BIND_AUTO_CREATE);
+        isBound = true;
+    }
+
+    private void unbindService(){
+        if (isBound){
+            unbindService(serviceConnection);
+            isBound = false;
+        }
+    }
+
     private void UpdateView() {
         myWord = (Word)getIntent().getSerializableExtra("DetailToEdit");
 
@@ -98,7 +147,7 @@ public class EditActivity extends AppCompatActivity {
 
     private void MatchObjectsWithComponents() {
         btnCancel = findViewById(R.id.btn_Cancel_edit);
-        btnOK = findViewById(R.id.btn_OK_edit);
+        btnUpdate = findViewById(R.id.btn_Update_edit);
         TVwordName = findViewById(R.id.TVWordName_edit);
         TVuserWordRating = findViewById(R.id.TVuserWordRating_edit);
         SBuserWordRating = findViewById(R.id.SBuserWordRating_edit);

@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,12 @@ public class WordArrayAdapter extends ArrayAdapter<Word> {
         wordList = words;
     }
 
+    public void Update(ArrayList<Word> words){
+        wordList.clear();
+        wordList.addAll(words);
+        this.notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public View getView(int current, @NonNull View convertView, @NonNull ViewGroup parent) {
@@ -37,7 +45,16 @@ public class WordArrayAdapter extends ArrayAdapter<Word> {
 
         // Image
         ImageView IVWordImage = listItem.findViewById(R.id.IVWordImage);
-        IVWordImage.setImageResource(myWord.getImage());
+
+        // using Picasso to insert image from URL - https://square.github.io/picasso/
+        if(myWord.URL == null || myWord.URL.equals("null"))
+        {
+            IVWordImage.setImageResource(myWord.getImage());
+        }
+        else
+        {
+            Picasso.get().load(myWord.URL).into(IVWordImage);
+        }
 
         // Name
         TextView TVWordLabel = listItem.findViewById(R.id.TVWordLabel);

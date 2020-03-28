@@ -1,14 +1,21 @@
 package com.example.assignment2_au547352_f20_wordlearnerapp2;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.squareup.picasso.Picasso;
 
 public class DetailsActivity extends AppCompatActivity {
 
@@ -20,6 +27,10 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView userWordRating;
     private TextView wordDescription;
     private TextView Notes;
+
+    private Boolean isBound = false;
+    private ServiceConnection serviceConnection;
+    private WordService wordService;
 
     private Word myWord;
 
@@ -35,10 +46,8 @@ public class DetailsActivity extends AppCompatActivity {
         MatchObjectsWithComponents();
         AddEventsToComponents();
         UpdateView();
-    }
-
-    public void onBackPressed() {
-        finish();
+        setServiceConnection();
+        bindService();
     }
 
     @Override
@@ -79,6 +88,23 @@ public class DetailsActivity extends AppCompatActivity {
         });
     }
 
+    private void setServiceConnection(){
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                wordService = ((WordService.WordBinder)service).getService();
+                isBound = true;
+                Toast.makeText(getApplicationContext(),"Service is connected",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                Toast.makeText(getApplicationContext(),"Service disconnected",Toast.LENGTH_LONG).show();
+                isBound = false;
+            }
+        };
+    }
+
     private void UpdateView() {
         myWord = (Word)getIntent().getSerializableExtra("wordInput");
 
@@ -88,7 +114,39 @@ public class DetailsActivity extends AppCompatActivity {
         userWordRating.setText(myWord.getUserRating().toString());
         wordDescription.setText(myWord.getDescription());
         Notes.setText(myWord.getNotes());
+        if (myWord.URL==null || myWord.URL.equals("null")){
+            wordImage.setImageResource(myWord.getImage());
+        }
+        else {
+            Picasso.get().load(myWord.URL).into(wordImage);
+        }
     }
+
+    private void bindService(){
+        Intent serviceIntent = new Intent(DetailsActivity.this,WordService.class);
+        bindService(serviceIntent,serviceConnection, Context.BIND_AUTO_CREATE);
+        isBound = true;
+    }
+
+    private void unbindService(){
+        if (isBound){
+            unbindService(serviceConnection);
+            isBound = false;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        unbindService();
+        finish();
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        unbindService();
+    }
+
 
     protected void onSaveInstanceState(Bundle bundle) {
         bundle.putSerializable("wordSave",myWord);

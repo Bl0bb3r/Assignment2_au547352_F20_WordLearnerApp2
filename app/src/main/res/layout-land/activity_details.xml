@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="@string/wordName"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="28sp"
@@ -53,11 +53,13 @@
         android:id="@+id/TVuserWordRating_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginEnd="60dp"
         android:text="@string/TVUserRating"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="45sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_Cancel_details"
         app:layout_constraintEnd_toEndOf="@+id/TVWordName_details"
         app:layout_constraintStart_toStartOf="@+id/TVWordName_details"
         app:layout_constraintTop_toTopOf="@+id/TVWordPronunciation_details" />
@@ -118,24 +120,33 @@
 
     <Button
         android:id="@+id/btn_Cancel_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="55dp"
         android:layout_marginBottom="20dp"
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_Edit_details"
-        app:layout_constraintStart_toEndOf="@+id/TVuserWordRating_details" />
+        app:layout_constraintStart_toStartOf="@+id/TVWordPronunciation_details" />
+
+    <Button
+        android:id="@+id/btn_Delete_details"
+        android:layout_width="120dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="40dp"
+        android:text="@string/delete"
+        app:layout_constraintBaseline_toBaselineOf="@id/btn_Cancel_details"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/TVWordNotes_details"
+        app:layout_constraintStart_toStartOf="@+id/TVWordPronunciation_details" />
 
     <Button
         android:id="@+id/btn_Edit_details"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="120dp"
+        android:layout_height="55dp"
         android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
         android:text="@string/edit"
         app:layout_constraintBaseline_toBaselineOf="@id/btn_Cancel_details"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="@id/TVWordNotes_details" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,13 @@
         android:roundIcon="@mipmap/word_learner_red01"
         android:supportsRtl="true"
         android:theme="@style/ABstheme">
-        <activity android:name=".EditActivity"></activity>
+        <service
+            android:name=".WordService"
+            android:enabled="true"
+            android:permission="android:permission.BIND_WORD_SERVICE"
+            android:exported="true"></service>
+
+        <activity android:name=".EditActivity" />
         <activity android:name=".DetailsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

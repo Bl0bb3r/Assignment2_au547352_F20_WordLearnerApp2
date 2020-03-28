@@ -35,20 +35,61 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TVWordLabel_main" />
 
-
-
-    <Button
-        android:id="@+id/btn_Exit_main"
-        android:text="@string/Exit"
-        android:layout_width="125dp"
+    <TextView
+        android:id="@+id/TVsearchLabel_main"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/colorBlack"
-        android:background="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginRight="270dp"
+        android:layout_marginEnd="270dp"
+        android:text="@string/search"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_Exit_main"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/LVmainActivity_main" />
+
+    <EditText
+        android:id="@+id/ETsearchField_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autofillHints="@string/searchbar"
+        android:ems="12"
+        android:hint="@string/searchbar"
+        android:inputType="textPersonName"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_Add_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/TVsearchLabel_main"
+        app:layout_constraintTop_toBottomOf="@+id/LVmainActivity_main" />
+
+    <Button
+        android:id="@+id/btn_Exit_main"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="200dp"
+        android:layout_marginRight="200dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/colorAccent"
+        android:text="@string/Exit"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_Add_main"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="200dp"
+        android:layout_marginLeft="200dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/colorAccent"
+        android:text="@string/add"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,9 +14,9 @@ public interface WordDAO {
 
     // Add Word
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertWord(Word word);
+    void addWord(Word word);
 
-    // Add Words
+    // Insert Words
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertWords(List<Word> wordList);
 

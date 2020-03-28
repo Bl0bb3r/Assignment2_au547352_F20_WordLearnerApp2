@@ -24,12 +24,13 @@ public class Word implements Serializable {
     private int image;
     @PrimaryKey (autoGenerate = true)
     private int ID;
+    public String URL;
 
     @Ignore
     public Word() {
         this.name = "word";
         this.pronunciation = "wuhd";
-        this.description = "you try to describe the word word";
+        this.description = "let me see you try to describe the word word";
         this.userRating = 7.2;
         this.notes = "Insert Notes";
         this.image = R.drawable.nophoto;

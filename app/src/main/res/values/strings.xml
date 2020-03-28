@@ -14,4 +14,9 @@
     <string name="wordRating">Word Rating:</string>
     <string name="insertNotes">Insert notes here</string>
     <string name="ok" translatable="false">OK</string>
+    <string name="search">Search:</string>
+    <string name="add">Add new</string>
+    <string name="searchbar">Search here...</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
 </resources>
