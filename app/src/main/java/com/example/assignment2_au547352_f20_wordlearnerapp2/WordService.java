@@ -104,9 +104,9 @@ public class WordService extends Service {
     // Should read all json objects using Gson.
 
     public void GetAPIWords(String searchKey, Context context, final boolean start){
-        this.myContext =context;
+        this.myContext = context;
         requestQueue = Volley.newRequestQueue(context);
-        stringRequest = new StringRequest(Request.Method.GET + searchKey, new Response.Listener<String>() {
+        stringRequest = new StringRequest(Request.Method.GET + URL + searchKey, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.i("OnResponse", "OnResponse called");
@@ -138,7 +138,7 @@ public class WordService extends Service {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),"ResponseError",Toast.LENGTH_LONG).show();
             }
-        }) { //TODO kig på API vedr. Auth.
+        })  { //TODO kig på API vedr. Auth.
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
