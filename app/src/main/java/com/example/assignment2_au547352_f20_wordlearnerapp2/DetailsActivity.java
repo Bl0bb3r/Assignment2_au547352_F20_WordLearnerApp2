@@ -20,6 +20,7 @@ import com.squareup.picasso.Picasso;
 public class DetailsActivity extends AppCompatActivity {
 
     private Button btnCancel;
+    private Button btnDelete;
     private Button btnEdit;
     private ImageView wordImage;
     private TextView wordName;
@@ -75,6 +76,15 @@ public class DetailsActivity extends AppCompatActivity {
                 Intent cancelIntent = new Intent();
                 setResult(Activity.RESULT_CANCELED,cancelIntent);
                 finish();
+            }
+        });
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Add functionality for deleting current word from wordListView
+                Intent cancelIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED,cancelIntent);
+
             }
         });
         btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +165,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     private void MatchObjectsWithComponents() {
         btnCancel = findViewById(R.id.btn_Cancel_details);
+        btnDelete = findViewById(R.id.btn_Delete_details);
         btnEdit = findViewById(R.id.btn_Edit_details);
         wordImage = findViewById(R.id.IVWordImage_details);
         wordName = findViewById(R.id.TVWordName_details);

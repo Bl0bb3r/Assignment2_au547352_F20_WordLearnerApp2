@@ -224,7 +224,7 @@ public class WordService extends Service {
             Notification notification = new NotificationCompat.Builder(WordService.this, "Channel01")
                     .setContentText("Check out this word of the day: "+notificationWordList.getName()+" "+notificationWordList.getPronunciation())
                     .setContentTitle(getText(R.string.app_name))
-                    .setSmallIcon(R.mipmap.word_learner_red01)
+                    .setSmallIcon(R.mipmap.word_learner_square_yellow_01)
                     .setChannelId("Channel01")
                     .build();
             startForeground(10, notification);

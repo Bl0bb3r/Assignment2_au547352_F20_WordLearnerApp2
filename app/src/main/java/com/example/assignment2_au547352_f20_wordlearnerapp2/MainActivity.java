@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private Word selectedWord;
     private WordService wordService;
     private EditText searchFieldET;
-    private Button BtnAdd;
-    private Button BtnExit;
+    private Button btnAdd;
+    private Button btnExit;
 
     private int wordIndex;
 
@@ -121,8 +121,8 @@ public class MainActivity extends AppCompatActivity {
 
     //region Component Handlers
     private void MatchObjectWithComponents() {
-        BtnExit = findViewById(R.id.btn_Exit_main);
-        BtnAdd = findViewById(R.id.btn_Add_main);
+        btnExit = findViewById(R.id.btn_Exit_main);
+        btnAdd = findViewById(R.id.btn_Add_main);
         wordListView = findViewById(R.id.LVmainActivity_main);
         searchFieldET = findViewById(R.id.ETsearchField_main);
 
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        BtnExit.setOnClickListener(new View.OnClickListener() {
+        btnExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 unbindService();
@@ -151,15 +151,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Add functionality for adding new word to wordListView
+                wordService.GetAPIWords(searchFieldET.getText().toString(),getApplicationContext(),false);
+                wordList = (ArrayList<Word>)wordService.getAllWords();
+                wordListAdaptor.Update(wordList);
+                ((BaseAdapter)wordListView.getAdapter()).notifyDataSetChanged();
+                Log.i("ADD", "onClick add: Added word to list");
+
+            }
+        });
+
         //Broadcast receiver calling when list updated through service
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                wordList.clear();
                 wordList = (ArrayList<Word>)wordService.getAllWords();
                 wordListAdaptor.Update(wordList);
                 ((BaseAdapter)wordListView.getAdapter()).notifyDataSetChanged();
-                Log.i("BRN","Broadcast notification");
+                Log.i("BRN","Broadcast receive notification");
             }
         };
     }

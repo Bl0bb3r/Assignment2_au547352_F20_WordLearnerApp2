@@ -74,7 +74,7 @@ public class EditActivity extends AppCompatActivity {
                 Intent sendIntent = new Intent();
                 sendIntent.putExtra("passChangesToDetails", myWord);
                 setResult(Activity.RESULT_OK,sendIntent);
-                unbindService(); //TODO 50-50
+                unbindService(); //TODO 50-50?
                 finish();
             }
         });
