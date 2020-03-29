@@ -81,9 +81,11 @@ public class DetailsActivity extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Add functionality for deleting current word from wordListView
                 Intent cancelIntent = new Intent();
                 setResult(Activity.RESULT_CANCELED,cancelIntent);
+                wordService.deleteWord(myWord.getID());
+                unbindService();
+                finish();
 
             }
         });

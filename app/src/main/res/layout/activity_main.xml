@@ -23,7 +23,7 @@
     <ListView
         android:id="@+id/LVmainActivity_main"
         android:layout_width="0dp"
-        android:layout_height="430dp"
+        android:layout_height="435dp"
         android:layout_marginTop="10dp"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
@@ -66,7 +66,7 @@
     <Button
         android:id="@+id/btn_Exit_main"
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginEnd="200dp"
         android:layout_marginRight="200dp"
         android:layout_marginBottom="15dp"
@@ -80,7 +80,7 @@
     <Button
         android:id="@+id/btn_Add_main"
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginStart="200dp"
         android:layout_marginLeft="200dp"
         android:layout_marginBottom="15dp"

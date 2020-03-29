@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/IVWordImage_details"
         android:layout_width="325dp"
-        android:layout_height="175dp"
+        android:layout_height="130dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
@@ -53,16 +53,15 @@
         android:id="@+id/TVuserWordRating_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="60dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
         android:text="@string/TVUserRating"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="45sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_Cancel_details"
-        app:layout_constraintEnd_toEndOf="@+id/TVWordName_details"
+        app:layout_constraintEnd_toStartOf="@+id/TVWordNotes_details"
         app:layout_constraintStart_toStartOf="@+id/TVWordName_details"
-        app:layout_constraintTop_toTopOf="@+id/TVWordPronunciation_details" />
+        app:layout_constraintTop_toBottomOf="@+id/IVWordImage_details" />
 
     <TextView
         android:id="@+id/TVWordDescriptionLabel_details"
@@ -122,7 +121,7 @@
         android:id="@+id/btn_Cancel_details"
         android:layout_width="120dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="15dp"
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/TVWordPronunciation_details" />
@@ -131,7 +130,6 @@
         android:id="@+id/btn_Delete_details"
         android:layout_width="120dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="40dp"
         android:text="@string/delete"
         app:layout_constraintBaseline_toBaselineOf="@id/btn_Cancel_details"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -142,7 +140,6 @@
         android:id="@+id/btn_Edit_details"
         android:layout_width="120dp"
         android:layout_height="55dp"
-        android:layout_marginBottom="20dp"
         android:text="@string/edit"
         app:layout_constraintBaseline_toBaselineOf="@id/btn_Cancel_details"
         app:layout_constraintBottom_toBottomOf="parent"
