@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.assignment2_au547352_f20_wordlearnerapp2">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/word_learner_red01"
@@ -13,7 +17,7 @@
             android:name=".WordService"
             android:enabled="true"
             android:permission="android:permission.BIND_WORD_SERVICE"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity android:name=".EditActivity" />
         <activity android:name=".DetailsActivity" />

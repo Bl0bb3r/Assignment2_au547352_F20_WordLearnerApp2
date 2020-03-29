@@ -16,6 +16,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.room.Room;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -32,7 +33,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -135,7 +138,14 @@ public class WordService extends Service {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(),"ResponseError",Toast.LENGTH_LONG).show();
             }
-        });
+        }) { //TODO kig på API vedr. Auth.
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Authorization",myApiToken);
+                return params;
+            }
+        };
         requestQueue.add(stringRequest);
     }
 
@@ -151,7 +161,7 @@ public class WordService extends Service {
         apiWord.setID(new Random().nextInt(9999));
         String imageURL = jsonObject.get("image_url").toString().substring(1,jsonObject.get("image_url").toString().length()-1);
         apiWord.URL = imageURL;
-        if (imageURL!="null"){
+        if (!imageURL.equals("null")){
             apiWord.setImage(R.drawable.nophoto);
         }
         else {

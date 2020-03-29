@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Assignment2 au547352 F20 Word Learner 2</string>
+    <string name="app_name" translatable="false">au547352 Word Learner 2</string>
     <string name="my_words">My Words:</string>
     <string name="Exit">Exit</string>
     <string name="wordImage">Image of word:</string>
@@ -16,7 +16,7 @@
     <string name="ok" translatable="false">OK</string>
     <string name="search">Search:</string>
     <string name="add">Add new</string>
-    <string name="searchbar">Search here...</string>
+    <string name="searchbar">Search here…</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
 </resources>

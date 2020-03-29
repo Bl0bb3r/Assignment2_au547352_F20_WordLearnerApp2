@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Assignment2_au547352_F20_WordLearnerApp2</string>
     <string name="my_words">Mine Ord:</string>
     <string name="Exit">Luk</string>
     <string name="wordImage">Billede af ord:</string>
