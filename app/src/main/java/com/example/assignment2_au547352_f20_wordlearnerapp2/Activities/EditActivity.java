@@ -1,4 +1,4 @@
-package com.example.assignment2_au547352_f20_wordlearnerapp2;
+package com.example.assignment2_au547352_f20_wordlearnerapp2.Activities;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -16,6 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.assignment2_au547352_f20_wordlearnerapp2.Model.Word;
+import com.example.assignment2_au547352_f20_wordlearnerapp2.R;
+import com.example.assignment2_au547352_f20_wordlearnerapp2.Service.WordService;
 
 public class EditActivity extends AppCompatActivity {
 

@@ -1,10 +1,9 @@
-package com.example.assignment2_au547352_f20_wordlearnerapp2;
+package com.example.assignment2_au547352_f20_wordlearnerapp2.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.app.Activity;
-import android.app.job.JobService;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -20,6 +19,14 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.example.assignment2_au547352_f20_wordlearnerapp2.Database.WordApplication;
+import com.example.assignment2_au547352_f20_wordlearnerapp2.Database.WordDB;
+import com.example.assignment2_au547352_f20_wordlearnerapp2.Model.Word;
+import com.example.assignment2_au547352_f20_wordlearnerapp2.R;
+import com.example.assignment2_au547352_f20_wordlearnerapp2.WordArrayAdapter;
+import com.example.assignment2_au547352_f20_wordlearnerapp2.Service.WordService;
 
 import java.util.ArrayList;
 
@@ -134,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         wordListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View v, int i, long l) {
-                Intent intent = new Intent(MainActivity.this,DetailsActivity.class);
+                Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
                 selectedWord = wordList.get(i);
                 unbindService();
                 intent.putExtra("wordInput",selectedWord);
@@ -155,11 +162,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO: Add functionality for adding new word to wordListView
-                wordService.GetAPIWords(searchFieldET.getText().toString(),getApplicationContext(),false);
+                wordService.RequestAPIAccess(searchFieldET.getText().toString());
                 wordList = (ArrayList<Word>)wordService.getAllWords();
                 wordListAdaptor.Update(wordList);
                 ((BaseAdapter)wordListView.getAdapter()).notifyDataSetChanged();
                 Log.i("ADD", "onClick add: Added word to list");
+                Toast.makeText(getApplicationContext(),"New word added to collection",Toast.LENGTH_LONG).show();
 
             }
         });
@@ -185,10 +193,11 @@ public class MainActivity extends AppCompatActivity {
                 wordService = ((WordService.WordBinder)service).getService();
                 wordList = (ArrayList<Word>)wordService.getAllWords();
 
+
                 // If loop - should update if wordList empty - inserting words including searchKey:"School"
                 if (wordList.size() == 0){
-                    wordService.insertWords(wordService.GetWordList(getApplicationContext()));
-                    wordService.GetAPIWords("School",getApplicationContext(),true);
+                    wordService.RequestAPIAccess("School");
+
                 }
                 wordListAdaptor.Update(wordList);
                 ((BaseAdapter)wordListView.getAdapter()).notifyDataSetChanged();

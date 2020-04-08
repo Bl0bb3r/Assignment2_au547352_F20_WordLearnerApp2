@@ -14,14 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/ABstheme">
         <service
-            android:name=".WordService"
+            android:name=".Service.WordService"
             android:enabled="true"
             android:permission="android:permission.BIND_WORD_SERVICE"
             android:exported="true" />
 
-        <activity android:name=".EditActivity" />
-        <activity android:name=".DetailsActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activities.EditActivity" />
+        <activity android:name=".Activities.DetailsActivity" />
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

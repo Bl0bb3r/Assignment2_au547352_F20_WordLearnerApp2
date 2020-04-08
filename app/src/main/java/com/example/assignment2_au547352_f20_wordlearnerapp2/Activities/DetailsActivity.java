@@ -1,4 +1,4 @@
-package com.example.assignment2_au547352_f20_wordlearnerapp2;
+package com.example.assignment2_au547352_f20_wordlearnerapp2.Activities;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.assignment2_au547352_f20_wordlearnerapp2.Model.Word;
+import com.example.assignment2_au547352_f20_wordlearnerapp2.R;
+import com.example.assignment2_au547352_f20_wordlearnerapp2.Service.WordService;
 import com.squareup.picasso.Picasso;
 
 public class DetailsActivity extends AppCompatActivity {
@@ -92,7 +95,7 @@ public class DetailsActivity extends AppCompatActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetailsActivity.this,EditActivity.class);
+                Intent intent = new Intent(DetailsActivity.this, EditActivity.class);
                 intent.putExtra("DetailToEdit",myWord);
                 startActivityForResult(intent, REQUEST_EDIT);
 

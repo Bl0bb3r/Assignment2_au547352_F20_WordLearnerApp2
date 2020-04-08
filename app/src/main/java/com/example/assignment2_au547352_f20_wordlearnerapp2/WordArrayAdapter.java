@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.assignment2_au547352_f20_wordlearnerapp2.Model.Word;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

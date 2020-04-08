@@ -1,10 +1,12 @@
-package com.example.assignment2_au547352_f20_wordlearnerapp2;
+package com.example.assignment2_au547352_f20_wordlearnerapp2.Model;
 
 import android.content.Context;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.example.assignment2_au547352_f20_wordlearnerapp2.R;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -21,12 +23,12 @@ public class Word implements Serializable {
     private String description;
     private Double userRating;
     private String notes;
-    private int image;
+    private String image;
     @PrimaryKey (autoGenerate = true)
     private int ID;
     public String URL;
 
-    @Ignore
+    /*@Ignore
     public Word() {
         this.name = "word";
         this.pronunciation = "wuhd";
@@ -36,9 +38,9 @@ public class Word implements Serializable {
         this.image = R.drawable.nophoto;
         this.ID = 1337;
 
-    }
+    }*/
 
-    public Word(int ID, String name, String pronunciation, String description, Double userRating, String notes, int image) {
+    public Word(int ID, String name, String pronunciation, String description, Double userRating, String notes, String image) {
         this.name = name;
         this.pronunciation = pronunciation;
         this.description = description;
@@ -63,9 +65,9 @@ public class Word implements Serializable {
 
 
     // image
-    public Integer getImage() { return image; }
+    public String getImage() { return image; }
 
-    public void setImage(Integer Image) { image = Image;
+    public void setImage(String Image) { image = Image;
     }
 
 
