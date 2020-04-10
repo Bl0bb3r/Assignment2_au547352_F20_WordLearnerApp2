@@ -1,4 +1,4 @@
-package com.example.assignment2_au547352_f20_wordlearnerapp2;
+package com.example.assignment2_au547352_f20_wordlearnerapp2.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.assignment2_au547352_f20_wordlearnerapp2.Model.Word;
+import com.example.assignment2_au547352_f20_wordlearnerapp2.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -44,18 +45,9 @@ public class WordArrayAdapter extends ArrayAdapter<Word> {
 
         Word myWord = wordList.get(current);
 
-        // Image
+        // Image - again using Picasso to insert from URL
         ImageView IVWordImage = listItem.findViewById(R.id.IVWordImage);
-
-        // using Picasso to insert image from URL - https://square.github.io/picasso/
-        if(myWord.URL == null || myWord.URL.equals("null"))
-        {
-            IVWordImage.setImageResource(myWord.getImage());
-        }
-        else
-        {
-            Picasso.get().load(myWord.URL).into(IVWordImage);
-        }
+        Picasso.get().load(myWord.getImage()).into(IVWordImage);
 
         // Name
         TextView TVWordLabel = listItem.findViewById(R.id.TVWordLabel);

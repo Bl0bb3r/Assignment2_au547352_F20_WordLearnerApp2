@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.assignment2_au547352_f20_wordlearnerapp2.Model.Word;
@@ -37,6 +38,7 @@ public class DetailsActivity extends AppCompatActivity {
     private WordService wordService;
 
     private Word myWord;
+    private String mainInputReceived;
 
     static final int REQUEST_EDIT = 1;
 
@@ -47,29 +49,58 @@ public class DetailsActivity extends AppCompatActivity {
         if(savedInstanceState != null) {
             myWord = (Word)savedInstanceState.getSerializable("wordSave");
         }
+
+        Intent receiveIntent = getIntent();
+        mainInputReceived = receiveIntent.getStringExtra("wordInput");
+
         MatchObjectsWithComponents();
+
+
         AddEventsToComponents();
-        UpdateView();
+
+        // Set service connection also contains (not easily spotted) an updateWord functionality
         setServiceConnection();
+
         bindService();
     }
 
     @Override
-    protected void onActivityResult(int req, int res, Intent data) {
+    protected void onActivityResult(int req, int res, @Nullable Intent data) {
         super.onActivityResult(req, res,data);
         switch (req){
             case REQUEST_EDIT:
                 if (res == Activity.RESULT_OK){
 
-                    myWord = (Word)data.getSerializableExtra("passChangesToDetails");
+                    //myWord = (Word)data.getSerializableExtra("passChangesToDetails");
                     Intent intentResult = new Intent(DetailsActivity.this, MainActivity.class);
-                    intentResult.putExtra("passChangesToMain",myWord);
+                    //intentResult.putExtra("passChangesToMain",myWord);
                     setResult(Activity.RESULT_OK,intentResult);
                     finish();
 
                 }
                 break;
         }
+    }
+
+    private void setServiceConnection(){
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                // using wordService here to update the actual word contained in the DetailsActivity resulting individually based on which we clicked from list.
+                wordService = ((WordService.WordBinder)service).getService();
+                myWord = wordService.getWord(mainInputReceived);
+                UpdateWord();
+                isBound = true;
+                Toast.makeText(getApplicationContext(),"Service is connected",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                Toast.makeText(getApplicationContext(),"Service disconnected",Toast.LENGTH_LONG).show();
+                serviceConnection = null;
+                isBound = false;
+            }
+        };
     }
 
     private void AddEventsToComponents() {
@@ -96,45 +127,31 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailsActivity.this, EditActivity.class);
-                intent.putExtra("DetailToEdit",myWord);
+                intent.putExtra("DetailToEdit", mainInputReceived);
                 startActivityForResult(intent, REQUEST_EDIT);
 
             }
         });
     }
 
-    private void setServiceConnection(){
-        serviceConnection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                wordService = ((WordService.WordBinder)service).getService();
-                isBound = true;
-                Toast.makeText(getApplicationContext(),"Service is connected",Toast.LENGTH_LONG).show();
-            }
 
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                Toast.makeText(getApplicationContext(),"Service disconnected",Toast.LENGTH_LONG).show();
-                isBound = false;
-            }
-        };
-    }
+    private void UpdateWord() {
+        //myWord = (Word)getIntent().getSerializableExtra("wordInput");
 
-    private void UpdateView() {
-        myWord = (Word)getIntent().getSerializableExtra("wordInput");
-
-        wordImage.setImageResource(myWord.getImage());
         wordName.setText(myWord.getName());
         wordPronunciation.setText(myWord.getPronunciation());
-        userWordRating.setText(myWord.getUserRating().toString());
         wordDescription.setText(myWord.getDescription());
+
+        //getting this warning - could be avoided somply by chaning the datatype permanent from double to string -
+        // however if we later on want to use the value as a number we would have to change structure.
+        userWordRating.setText(myWord.getUserRating().toString());
+
         Notes.setText(myWord.getNotes());
-        if (myWord.URL==null || myWord.URL.equals("null")){
-            wordImage.setImageResource(myWord.getImage());
-        }
-        else {
-            Picasso.get().load(myWord.URL).into(wordImage);
-        }
+
+        // Loads image URL - so either default image we inserted with service or API image :)
+        // using Picasso to insert image from URL - https://square.github.io/picasso/
+        Picasso.get().load(myWord.getImage()).into(wordImage);
+
     }
 
     private void bindService(){

@@ -34,22 +34,31 @@ public class EditActivity extends AppCompatActivity {
     private ServiceConnection serviceConnection;
     private WordService wordService;
 
-
-    Word myWord;
+    //TODO Look here
+        //inserted private? test
+    private Word myWord;
+    private String detailInputRecieved;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
+
         if (savedInstanceState != null) {
             myWord = (Word)savedInstanceState.getSerializable("words");
         }
+
+        Intent receiveIntent = getIntent();
+        detailInputRecieved = receiveIntent.getStringExtra("DetailToEdit");
+
         MatchObjectsWithComponents();
+
         AddEventsToComponents();
+
         setServiceConnection();
+
         bindService();
-        UpdateView();
     }
 
     @Override
@@ -74,11 +83,17 @@ public class EditActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myWord.setNotes(ETnotes.getText().toString());
                 Intent sendIntent = new Intent();
-                sendIntent.putExtra("passChangesToDetails", myWord);
+                //TODO Insert functionality to actually read the TVuserWordRating and save the value into myWord. Tricky - it wants a String
+                myWord.setUserRating(TVuserWordRating.());
+);
+
+                myWord.setNotes(ETnotes.getText().toString());
+
+
+
+
                 setResult(Activity.RESULT_OK,sendIntent);
-                unbindService(); //TODO 50-50?
                 finish();
             }
         });
@@ -107,12 +122,15 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 wordService = ((WordService.WordBinder)service).getService();
+                myWord = wordService.getWord(detailInputRecieved);
                 isBound = true;
+                UpdateWord();
                 Toast.makeText(getApplicationContext(),"Service connected",Toast.LENGTH_LONG);
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
+                serviceConnection = null;
                 isBound = false;
                 Toast.makeText(getApplicationContext(),"Service disconnected",Toast.LENGTH_LONG);
             }
@@ -132,15 +150,20 @@ public class EditActivity extends AppCompatActivity {
         }
     }
 
-    private void UpdateView() {
-        myWord = (Word)getIntent().getSerializableExtra("DetailToEdit");
+    private void UpdateWord() {
 
         TVwordName.setText(myWord.getName());
         TVuserWordRating.setText(myWord.getUserRating().toString());
         ETnotes.setText(myWord.getNotes());
         ETnotes.setMovementMethod(new ScrollingMovementMethod());
+
+        //Sequence updating how Seekbar shows its rating
         SBuserWordRating.setMax(100);
         SBuserWordRating.setProgress((int)(myWord.getUserRating()*10));
+        double tempRating = Double.parseDouble(myWord.getUserRating().toString());
+        // using trick to convert my double into an int - might have been able to workaround it?
+        int tempIntRating = (int) (tempRating);
+        SBuserWordRating.setProgress(tempIntRating);
     }
 
     @Override

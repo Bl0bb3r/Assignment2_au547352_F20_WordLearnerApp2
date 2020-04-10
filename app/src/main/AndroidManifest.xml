@@ -12,7 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/word_learner_red01"
         android:supportsRtl="true"
-        android:theme="@style/ABstheme">
+        android:theme="@style/ABstheme"
+        android:name=".Application.WordApplication">
         <service
             android:name=".Service.WordService"
             android:enabled="true"

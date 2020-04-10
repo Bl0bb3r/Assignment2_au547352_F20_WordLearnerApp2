@@ -20,25 +20,18 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.assignment2_au547352_f20_wordlearnerapp2.ApiModel.ApiWord;
-import com.example.assignment2_au547352_f20_wordlearnerapp2.Database.WordApplication;
+import com.example.assignment2_au547352_f20_wordlearnerapp2.Application.WordApplication;
 import com.example.assignment2_au547352_f20_wordlearnerapp2.Model.Word;
 import com.example.assignment2_au547352_f20_wordlearnerapp2.R;
 import com.example.assignment2_au547352_f20_wordlearnerapp2.Database.WordDB;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -130,7 +123,7 @@ public class WordService extends Service {
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, fullURL, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                fetchApiResponse(response.toString());
+                fetchApi(response.toString());
             }
         }, new Response.ErrorListener() {
             @Override
@@ -151,12 +144,14 @@ public class WordService extends Service {
 
     //Attempt to create mapper for objects we receive from API.
 
-    public void fetchApiResponse(String apiResponse) {
+    public void fetchApi(String apiResponse) {
         gson = gsonBuilder.create();
 
         ApiWord apiWord = gson.fromJson(apiResponse, ApiWord.class);
         if (apiWord != null) {
             Word newWord = new Word(0,"","","",0.0,"","");
+
+            //Checking if image resource is null - so I can insert a standard URL image, for Picasso to load later on.
             if (apiWord.getDefinitions().get(0).getImageUrl() != null) {
                 newWord.setImage(apiWord.getDefinitions().get(0).getImageUrl());
             } else {
@@ -208,7 +203,6 @@ public class WordService extends Service {
     // Schedule Local Notification in Android Step by Step:
     // https://www.youtube.com/watch?v=k-tREnlQsrk
     class myTimer extends TimerTask {
-                // TODO Look at this GetWordList - need to make a list of words to take from
         @Override
         public void run() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

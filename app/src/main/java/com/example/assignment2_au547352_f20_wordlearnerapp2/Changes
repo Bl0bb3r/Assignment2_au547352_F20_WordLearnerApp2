@@ -1,0 +1,19 @@
+Changes list: (Changes that underwent post-hand-in of first assignment 2 hand-in)
+
+Per my student peer review i changed some items that were pointed out to me. Some more obvious than others.
+
+Used a * system when added and changes are related. ex "I ADDED THIS *" - * "I CHANGED THIS"
+
+Added:
+Per the peer reviews feedback - All my references that were inserted in the references txt are now added each place in the actual code, where theyre used as inspiration in the form of guides/demos.
+Per the peer reviews feedback - I added tons of commens throughout the entire Solution, based on the code maybe not being so self explanatory.
+
+
+I added the functionality which was lacking, (this was to my knowledge at hand-in 1) of adding a word from the API - I had some problems with the API, which resulted in a slight structure change. *
+
+
+Changed:
+
+* This gave me access to the API and also full response without error from the image. This was originally caused be the API Image being a string, and i used int value for image, to use built in -
+  Android Studio functionality to use resources (drawables). Now works properly as intended.
+

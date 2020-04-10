@@ -21,11 +21,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.assignment2_au547352_f20_wordlearnerapp2.Database.WordApplication;
-import com.example.assignment2_au547352_f20_wordlearnerapp2.Database.WordDB;
 import com.example.assignment2_au547352_f20_wordlearnerapp2.Model.Word;
 import com.example.assignment2_au547352_f20_wordlearnerapp2.R;
-import com.example.assignment2_au547352_f20_wordlearnerapp2.WordArrayAdapter;
+import com.example.assignment2_au547352_f20_wordlearnerapp2.Adapter.WordArrayAdapter;
 import com.example.assignment2_au547352_f20_wordlearnerapp2.Service.WordService;
 
 import java.util.ArrayList;
@@ -114,9 +112,10 @@ public class MainActivity extends AppCompatActivity {
             case REQUEST_EDIT:
                 if (res == Activity.RESULT_OK){
 
-                    Word changedWord = (Word)data.getSerializableExtra("passChangesToMain");
+                   /* Word changedWord = (Word)data.getSerializableExtra("passChangesToMain");
                     wordList.set(wordIndex,changedWord);
-                    wordService.addWord(changedWord);
+                    wordService.addWord(changedWord); */
+
                     ((BaseAdapter)wordListView.getAdapter()).notifyDataSetChanged();
                 }
                 break;
@@ -140,13 +139,15 @@ public class MainActivity extends AppCompatActivity {
 
         wordListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View v, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View v, int pos, long l) {
                 Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                selectedWord = wordList.get(i);
-                unbindService();
-                intent.putExtra("wordInput",selectedWord);
+                //selectedWord = wordList.get(pos);
+                //unbindService();
+
+                //changed here instead of sending entire object to only sending the word (word name)
+                intent.putExtra("wordInput",wordList.get(pos).getName());
                 startActivityForResult(intent, REQUEST_EDIT);
-                wordIndex = i;
+                //wordIndex = pos;
             }
         });
 
@@ -161,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Add functionality for adding new word to wordListView
                 wordService.RequestAPIAccess(searchFieldET.getText().toString());
                 wordList = (ArrayList<Word>)wordService.getAllWords();
                 wordListAdaptor.Update(wordList);

@@ -10,6 +10,8 @@ import com.example.assignment2_au547352_f20_wordlearnerapp2.Model.Word;
 
 import java.util.List;
 
+// heavily inspired from https://www.youtube.com/watch?v=Ta4pw2nUUE4 and demo on using Room
+
 @Dao
 public interface WordDAO {
 
