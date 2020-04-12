@@ -34,8 +34,6 @@ public class EditActivity extends AppCompatActivity {
     private ServiceConnection serviceConnection;
     private WordService wordService;
 
-    //TODO Look here
-        //inserted private? test
     private Word myWord;
     private String detailInputRecieved;
 
@@ -84,14 +82,13 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent sendIntent = new Intent();
-                //TODO Insert functionality to actually read the TVuserWordRating and save the value into myWord. Tricky - it wants a String
-                myWord.setUserRating(TVuserWordRating.());
-);
-
+                // inserted slight functionality here to workaround our Word Model using UserRating as a double value
+                // but the value we read from the TextView is a string. This converts it the right way.
+                // slight inspiration from here - https://androidforums.com/threads/get-the-double-value-from-string.210387/
+                double tempRating = Double.parseDouble(TVuserWordRating.getText().toString());
+                myWord.setUserRating(tempRating);
                 myWord.setNotes(ETnotes.getText().toString());
-
-
-
+                wordService.updateWord(myWord);
 
                 setResult(Activity.RESULT_OK,sendIntent);
                 finish();
@@ -101,7 +98,8 @@ public class EditActivity extends AppCompatActivity {
         SBuserWordRating.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                myWord.setUserRating((double)progress/10);
+                double sbValue = ((double)progress/10);
+                myWord.setUserRating(sbValue);
                 TVuserWordRating.setText((myWord.getUserRating().toString()));
             }
 
