@@ -17,4 +17,10 @@
     <string name="searchbar">Søg her…</string>
     <string name="update">Opdater</string>
     <string name="delete">Slet</string>
+    <string name="word_exists">Ordet eksisterer allerede</string>
+    <string name="response_error">Respons Fejl</string>
+    <string name="word_added">Nyt ord blev tilføjet til samling</string>
+    <string name="service_connected">Service er tilkoblet</string>
+    <string name="service_disconnected">Service er frakoblet</string>
+    <string name="check_word">"Tjek det her ord ud: "</string>
 </resources>

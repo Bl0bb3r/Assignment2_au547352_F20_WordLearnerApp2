@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Word> wordList;
     private WordArrayAdapter wordListAdaptor;
     private ListView wordListView;
-    private Word selectedWord;
     private WordService wordService;
     private EditText searchFieldET;
     private Button btnAdd;
@@ -141,13 +140,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View v, int pos, long l) {
                 Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                //selectedWord = wordList.get(pos);
-                //unbindService();
 
                 //changed here instead of sending entire object to only sending the word (word name)
-                intent.putExtra("wordInput",wordList.get(pos).getName());
+                intent.putExtra("wordInput",wordListAdaptor.adapterWordList.get(pos).getName());
                 startActivityForResult(intent, REQUEST_EDIT);
-                //wordIndex = pos;
             }
         });
 
@@ -166,8 +162,9 @@ public class MainActivity extends AppCompatActivity {
                 wordList = (ArrayList<Word>)wordService.getAllWords();
                 wordListAdaptor.Update(wordList);
                 ((BaseAdapter)wordListView.getAdapter()).notifyDataSetChanged();
+
                 Log.i("ADD", "onClick add: Added word to list");
-                Toast.makeText(getApplicationContext(),"New word added to collection",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),""+getString(R.string.word_added),Toast.LENGTH_LONG).show();
 
             }
         });
@@ -194,13 +191,13 @@ public class MainActivity extends AppCompatActivity {
                 wordList = (ArrayList<Word>)wordService.getAllWords();
 
 
-                // If loop - should update if wordList empty - inserting words including searchKey:"School"
+                // If loop - should update if wordList empty - inserting words including searchKey:"Whale"
                 if (wordList.size() == 0){
-                    wordService.RequestAPIAccess("School");
-
+                    wordService.RequestAPIAccess("Whale");
                 }
                 wordListAdaptor.Update(wordList);
                 ((BaseAdapter)wordListView.getAdapter()).notifyDataSetChanged();
+                wordService.adapter = wordListAdaptor;
 
             }
 

@@ -88,15 +88,15 @@ public class DetailsActivity extends AppCompatActivity {
             public void onServiceConnected(ComponentName name, IBinder service) {
                 // using wordService here to update the actual word contained in the DetailsActivity resulting individually based on which we clicked from list.
                 wordService = ((WordService.WordBinder)service).getService();
-                myWord = wordService.getWord(mainInputReceived);
+                myWord = wordService.getWord(mainInputReceived.toLowerCase());
                 UpdateWord();
                 isBound = true;
-                Toast.makeText(getApplicationContext(),"Service is connected",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),""+getString(R.string.service_connected),Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                Toast.makeText(getApplicationContext(),"Service disconnected",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),""+getString(R.string.service_disconnected),Toast.LENGTH_LONG).show();
                 serviceConnection = null;
                 isBound = false;
             }

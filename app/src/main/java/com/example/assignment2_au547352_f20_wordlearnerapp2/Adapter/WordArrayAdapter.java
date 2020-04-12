@@ -20,18 +20,20 @@ import java.util.List;
 public class WordArrayAdapter extends ArrayAdapter<Word> {
 
     Context myContext;
-    List<Word> wordList = new ArrayList<>();
+    public List<Word> adapterWordList = new ArrayList<>();
 
 
     public WordArrayAdapter(Context context, ArrayList<Word> words) {
         super(context,0,words);
         myContext = context;
-        wordList = words;
+        adapterWordList = words;
     }
 
     public void Update(ArrayList<Word> words){
-        wordList.clear();
-        wordList.addAll(words);
+
+        adapterWordList.clear();
+        adapterWordList.addAll(words);
+
         this.notifyDataSetChanged();
     }
 
@@ -43,7 +45,7 @@ public class WordArrayAdapter extends ArrayAdapter<Word> {
             listItem = LayoutInflater.from(myContext).inflate(R.layout.word_layout,parent,false);
         }
 
-        Word myWord = wordList.get(current);
+        Word myWord = adapterWordList.get(current);
 
         // Image - again using Picasso to insert from URL
         ImageView IVWordImage = listItem.findViewById(R.id.IVWordImage);

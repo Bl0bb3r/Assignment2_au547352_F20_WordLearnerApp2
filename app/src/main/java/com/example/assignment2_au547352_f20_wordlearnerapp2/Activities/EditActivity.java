@@ -37,6 +37,11 @@ public class EditActivity extends AppCompatActivity {
     private Word myWord;
     private String detailInputRecieved;
 
+    private Boolean savedState = false;
+    private Double savedRating;
+    private String savedNote;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +49,16 @@ public class EditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit);
 
         if (savedInstanceState != null) {
-            myWord = (Word)savedInstanceState.getSerializable("words");
-        }
+            myWord = (Word)savedInstanceState.getSerializable("savedWord");
+            savedRating = savedInstanceState.getDouble("savedRating",0.0);
+            savedNote = savedInstanceState.getString("savedNote");
+            savedState = true;
 
-        Intent receiveIntent = getIntent();
-        detailInputRecieved = receiveIntent.getStringExtra("DetailToEdit");
+        }
+        else {
+            Intent receiveIntent = getIntent();
+            detailInputRecieved = receiveIntent.getStringExtra("DetailToEdit");
+        }
 
         MatchObjectsWithComponents();
 
@@ -120,17 +130,19 @@ public class EditActivity extends AppCompatActivity {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 wordService = ((WordService.WordBinder)service).getService();
-                myWord = wordService.getWord(detailInputRecieved);
+                if (savedState==false) {
+                    myWord = wordService.getWord(detailInputRecieved);
+                }
                 isBound = true;
                 UpdateWord();
-                Toast.makeText(getApplicationContext(),"Service connected",Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(),""+getString(R.string.service_connected),Toast.LENGTH_LONG);
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
                 serviceConnection = null;
                 isBound = false;
-                Toast.makeText(getApplicationContext(),"Service disconnected",Toast.LENGTH_LONG);
+                Toast.makeText(getApplicationContext(),""+getString(R.string.service_disconnected),Toast.LENGTH_LONG);
             }
         };
     }
@@ -151,22 +163,29 @@ public class EditActivity extends AppCompatActivity {
     private void UpdateWord() {
 
         TVwordName.setText(myWord.getName());
-        TVuserWordRating.setText(myWord.getUserRating().toString());
-        ETnotes.setText(myWord.getNotes());
         ETnotes.setMovementMethod(new ScrollingMovementMethod());
-
-        //Sequence updating how Seekbar shows its rating
         SBuserWordRating.setMax(100);
-        SBuserWordRating.setProgress((int)(myWord.getUserRating()*10));
-        double tempRating = Double.parseDouble(myWord.getUserRating().toString());
-        // using trick to convert my double into an int - might have been able to workaround it?
-        int tempIntRating = (int) (tempRating);
-        SBuserWordRating.setProgress(tempIntRating);
+
+        if (savedState==false) {
+            TVuserWordRating.setText(myWord.getUserRating().toString());
+            ETnotes.setText(myWord.getNotes());
+            SBuserWordRating.setProgress((int) (myWord.getUserRating() * 10));
+        }
+        else {
+            TVuserWordRating.setText(savedRating.toString());
+            ETnotes.setText(savedNote);
+            //SBuserWordRating.setProgress(Integer.parseInt(savedRating.toString()));
+            SBuserWordRating.setProgress((int) (savedRating*10));
+        }
+
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("words",myWord);
+        outState.putSerializable("savedWord",myWord);
+        outState.putDouble("savedRating", Double.parseDouble(TVuserWordRating.getText().toString()));
+        outState.putString("savedNote", ETnotes.getText().toString());
+        savedState = true;
         super.onSaveInstanceState(outState);
     }
 

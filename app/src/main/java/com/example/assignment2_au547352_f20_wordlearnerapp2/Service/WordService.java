@@ -22,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.assignment2_au547352_f20_wordlearnerapp2.Adapter.WordArrayAdapter;
 import com.example.assignment2_au547352_f20_wordlearnerapp2.ApiModel.ApiWord;
 import com.example.assignment2_au547352_f20_wordlearnerapp2.Application.WordApplication;
 import com.example.assignment2_au547352_f20_wordlearnerapp2.Model.Word;
@@ -44,10 +45,10 @@ public class WordService extends Service {
 
     private IBinder iBinder = new WordBinder();
     private WordDB wordDB;
-    private ArrayList<Word> notificationWords;
     private Timer myTimer;
     private myTimer myTimerTask;
 
+    public WordArrayAdapter adapter;
 
     static final String BROADCASTER_UPDATING_LIST = "UpdateList";
 
@@ -124,11 +125,13 @@ public class WordService extends Service {
             @Override
             public void onResponse(JSONObject response) {
                 fetchApi(response.toString());
+                adapter.Update((ArrayList<Word>)getAllWords());
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "ResponseError", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), ""+getString(R.string.response_error), Toast.LENGTH_LONG).show();
             }
         }
         ) {
@@ -163,6 +166,7 @@ public class WordService extends Service {
             newWord.setPronunciation(apiWord.getPronunciation());
             newWord.setDescription(apiWord.getDefinitions().get(0).getDefinition());
 
+            //for (i=0;i>this.)
             this.addWord(newWord);
         }
     }
@@ -171,17 +175,31 @@ public class WordService extends Service {
 
     // Get single
     public Word getWord(String title) {
-        return wordDB.wordDAO().getWord(title);
+        Word word = wordDB.wordDAO().getWord(title.toLowerCase());
+        word.setName(word.getName().substring(0,1).toUpperCase()+word.getName().substring(1));
+        return word;
     }
 
     // Get all
     public List<Word> getAllWords() {
-        return wordDB.wordDAO().getAllWords();
+        List<Word> tempList = wordDB.wordDAO().getAllWords();
+        for (Word w:tempList) {
+            w.setName(w.getName().substring(0,1).toUpperCase()+w.getName().substring(1));
+        }
+        return tempList;
     }
 
     // Add
+    // Takes into consideration if the word already exists on the list.
     public void addWord(Word word) {
-        wordDB.wordDAO().addWord(word);
+        word.setName(word.getName().toLowerCase());
+        if(wordDB.wordDAO().getWord(word.getName())!=null)
+        {
+            Toast.makeText(getApplicationContext(), ""+getString(R.string.word_exists), Toast.LENGTH_LONG).show();
+        }
+        else {
+            wordDB.wordDAO().addWord(word);
+        }
     }
 
     // Insert
@@ -196,6 +214,7 @@ public class WordService extends Service {
 
     // Update
     public void updateWord(Word word) {
+        word.setName(word.getName().toLowerCase());
         wordDB.wordDAO().updateWord(word);
     }
     //endregion
@@ -219,7 +238,7 @@ public class WordService extends Service {
             int randomWord = random.nextInt(notiDB.wordDAO().getAllWords().size());
 
             Notification notification = new NotificationCompat.Builder(WordService.this, "Channel01")
-                    .setContentText("Check out this word: " + notiDB.wordDAO().getAllWords().get(randomWord).getName())
+                    .setContentText(""+getString(R.string.check_word) + notiDB.wordDAO().getAllWords().get(randomWord).getName())
                     .setContentTitle(getText(R.string.app_name))
                     .setSmallIcon(R.mipmap.word_learner_square_yellow_01)
                     .setChannelId("Channel01")
@@ -235,20 +254,20 @@ public class WordService extends Service {
         WordApplication wordApplication = (WordApplication) getApplication();
         wordDB = wordApplication.getWordDatabase();
         if (wordDB.wordDAO().getAllWords().isEmpty()){
-            wordDB.wordDAO().addWord(new Word(0,"Lion","ˈlīən", "A large tawny-coloured cat that lives in prides, found in Africa and NW India. The male has a flowing shaggy mane and takes little part in hunting, which is done cooperatively by the females.", 0.0, "", "https://media.owlbot.info/dictionary/images/ooooow.jpg.400x400_q85_box-23,22,478,477_crop_detail.jpg"));
-            wordDB.wordDAO().addWord(new Word(0,"Leopard","ˈlepərd", "A large solitary cat that has a fawn or brown coat with black spots, native to the forests of Africa and southern Asia.", 0.0, "", "https://media.owlbot.info/dictionary/images/oooooz.jpg.400x400_q85_box-0,0,500,500_crop_detail.jpg"));
-            wordDB.wordDAO().addWord(new Word(0,"Cheetah","ˈCHēdə", "A large slender spotted cat found in Africa and parts of Asia. It is the fastest animal on land.", 0.0, "", "https://media.owlbot.info/dictionary/images/sssssb.jpg.400x400_q85_box-0,0,500,500_crop_detail.jpg"));
-            wordDB.wordDAO().addWord(new Word(0,"Elephant","ˈeləfənt", "A very large plant-eating mammal with a prehensile trunk, long curved ivory tusks, and large ears, native to Africa and southern Asia. It is the largest living land animal.", 0.0, "", "https://media.owlbot.info/dictionary/images/27ti5gwrzr_Julie_Larsen_Maher_3242_African_Elephant_UGA_06_30_10_hr.jpg.400x400_q85_box-356,0,1156,798_crop_detail.jpg"));
-            wordDB.wordDAO().addWord(new Word(0,"Giraffe","jəˈraf", "A large African mammal with a very long neck and forelegs, having a coat patterned with brown patches separated by lighter lines. It is the tallest living animal.", 0.0, "", "https://media.owlbot.info/dictionary/images/nnnk.jpg.400x400_q85_box-0,0,225,225_crop_detail.jpg"));
-            wordDB.wordDAO().addWord(new Word(0,"Kudu","ˈko͞odo͞o", "An African antelope that has a greyish or brownish coat with white vertical stripes, and a short bushy tail. The male has long spirally curved horns.", 0.0, "", "https://media.owlbot.info/dictionary/images/kkkkkkj.jpg.400x400_q85_box-0,0,500,500_crop_detail.jpg"));
-            wordDB.wordDAO().addWord(new Word(0,"Gnu","n(y)o͞o", "A large dark antelope with a long head, a beard and mane, and a sloping back.", 0.0, "", "https://media.owlbot.info/dictionary/images/qqqqql.jpg.400x400_q85_box-0,0,1413,1414_crop_detail.jpg"));
-            wordDB.wordDAO().addWord(new Word(0,"Oryx","null", "A large antelope living in arid regions of Africa and Arabia, having dark markings on the face and long horns.", 0.0, "", "https://media.owlbot.info/dictionary/images/nnnnnn.jpg.400x400_q85_box-0,0,500,500_crop_detail.jpg"));
-            wordDB.wordDAO().addWord(new Word(0,"Camel","ˈkaməl", "A large, long-necked ungulate mammal of arid country, with long slender legs, broad cushioned feet, and either one or two humps on the back. Camels can survive for long periods without food or drink, chiefly by using up the fat reserves in their humps.", 0.0, "", "https://media.owlbot.info/dictionary/images/nnnt.png.400x400_q85_box-0,0,500,500_crop_detail.png"));
-            wordDB.wordDAO().addWord(new Word(0,"Shark","SHärk", "a long-bodied chiefly marine fish with a cartilaginous skeleton, a prominent dorsal fin, and tooth-like scales. Most sharks are predatory, though the largest kinds feed on plankton, and some can grow to a large size.", 0.0, "", "https://media.owlbot.info/dictionary/images/dn.jpg.400x400_q85_box-576,0,1226,649_crop_detail.jpg"));
-            wordDB.wordDAO().addWord(new Word(0,"Crocodile","ˈkräkəˌdīl", "a large predatory semiaquatic reptile with long jaws, long tail, short legs, and a horny textured skin.", 0.0, "", "https://media.owlbot.info/dictionary/images/rrrrrm.jpg.400x400_q85_box-0,0,500,500_crop_detail.jpg"));
-            wordDB.wordDAO().addWord(new Word(0,"Snake","snāk", "a long limbless reptile which has no eyelids, a short tail, and jaws that are capable of considerable extension. Some snakes have a venomous bite.", 0.0, "", "https://media.owlbot.info/dictionary/images/llllllg.jpg.400x400_q85_box-0,0,225,225_crop_detail.jpg"));
-            wordDB.wordDAO().addWord(new Word(0,"Buffalo","ˈbəf(ə)ˌlō", "a heavily built wild ox with backward-curving horns, found mainly in the Old World tropics:", 0.0, "", "https://media.owlbot.info/dictionary/images/kkkkkkw.jpg.400x400_q85_box-0,0,600,600_crop_detail.jpg"));
-            wordDB.wordDAO().addWord(new Word(0,"Ostrich","ˈästriCH", "A flightless swift-running African bird with a long neck, long legs, and two toes on each foot. It is the largest living bird, with males reaching a height of up to 2.75 m.", 0.0, "", "https://media.owlbot.info/dictionary/images/gggk.jpg.400x400_q85_box-0,0,225,225_crop_detail.jpg"));
+            wordDB.wordDAO().addWord(new Word(0,"lion","ˈlīən", "A large tawny-coloured cat that lives in prides, found in Africa and NW India. The male has a flowing shaggy mane and takes little part in hunting, which is done cooperatively by the females.", 0.0, "", "https://media.owlbot.info/dictionary/images/ooooow.jpg.400x400_q85_box-23,22,478,477_crop_detail.jpg"));
+            wordDB.wordDAO().addWord(new Word(0,"leopard","ˈlepərd", "A large solitary cat that has a fawn or brown coat with black spots, native to the forests of Africa and southern Asia.", 0.0, "", "https://media.owlbot.info/dictionary/images/oooooz.jpg.400x400_q85_box-0,0,500,500_crop_detail.jpg"));
+            wordDB.wordDAO().addWord(new Word(0,"cheetah","ˈCHēdə", "A large slender spotted cat found in Africa and parts of Asia. It is the fastest animal on land.", 0.0, "", "https://media.owlbot.info/dictionary/images/sssssb.jpg.400x400_q85_box-0,0,500,500_crop_detail.jpg"));
+            wordDB.wordDAO().addWord(new Word(0,"elephant","ˈeləfənt", "A very large plant-eating mammal with a prehensile trunk, long curved ivory tusks, and large ears, native to Africa and southern Asia. It is the largest living land animal.", 0.0, "", "https://media.owlbot.info/dictionary/images/27ti5gwrzr_Julie_Larsen_Maher_3242_African_Elephant_UGA_06_30_10_hr.jpg.400x400_q85_box-356,0,1156,798_crop_detail.jpg"));
+            wordDB.wordDAO().addWord(new Word(0,"giraffe","jəˈraf", "A large African mammal with a very long neck and forelegs, having a coat patterned with brown patches separated by lighter lines. It is the tallest living animal.", 0.0, "", "https://media.owlbot.info/dictionary/images/nnnk.jpg.400x400_q85_box-0,0,225,225_crop_detail.jpg"));
+            wordDB.wordDAO().addWord(new Word(0,"kudu","ˈko͞odo͞o", "An African antelope that has a greyish or brownish coat with white vertical stripes, and a short bushy tail. The male has long spirally curved horns.", 0.0, "", "https://media.owlbot.info/dictionary/images/kkkkkkj.jpg.400x400_q85_box-0,0,500,500_crop_detail.jpg"));
+            wordDB.wordDAO().addWord(new Word(0,"gnu","n(y)o͞o", "A large dark antelope with a long head, a beard and mane, and a sloping back.", 0.0, "", "https://media.owlbot.info/dictionary/images/qqqqql.jpg.400x400_q85_box-0,0,1413,1414_crop_detail.jpg"));
+            wordDB.wordDAO().addWord(new Word(0,"oryx","null", "A large antelope living in arid regions of Africa and Arabia, having dark markings on the face and long horns.", 0.0, "", "https://media.owlbot.info/dictionary/images/nnnnnn.jpg.400x400_q85_box-0,0,500,500_crop_detail.jpg"));
+            wordDB.wordDAO().addWord(new Word(0,"camel","ˈkaməl", "A large, long-necked ungulate mammal of arid country, with long slender legs, broad cushioned feet, and either one or two humps on the back. Camels can survive for long periods without food or drink, chiefly by using up the fat reserves in their humps.", 0.0, "", "https://media.owlbot.info/dictionary/images/nnnt.png.400x400_q85_box-0,0,500,500_crop_detail.png"));
+            wordDB.wordDAO().addWord(new Word(0,"shark","SHärk", "a long-bodied chiefly marine fish with a cartilaginous skeleton, a prominent dorsal fin, and tooth-like scales. Most sharks are predatory, though the largest kinds feed on plankton, and some can grow to a large size.", 0.0, "", "https://media.owlbot.info/dictionary/images/dn.jpg.400x400_q85_box-576,0,1226,649_crop_detail.jpg"));
+            wordDB.wordDAO().addWord(new Word(0,"crocodile","ˈkräkəˌdīl", "a large predatory semiaquatic reptile with long jaws, long tail, short legs, and a horny textured skin.", 0.0, "", "https://media.owlbot.info/dictionary/images/rrrrrm.jpg.400x400_q85_box-0,0,500,500_crop_detail.jpg"));
+            wordDB.wordDAO().addWord(new Word(0,"snake","snāk", "a long limbless reptile which has no eyelids, a short tail, and jaws that are capable of considerable extension. Some snakes have a venomous bite.", 0.0, "", "https://media.owlbot.info/dictionary/images/llllllg.jpg.400x400_q85_box-0,0,225,225_crop_detail.jpg"));
+            wordDB.wordDAO().addWord(new Word(0,"buffalo","ˈbəf(ə)ˌlō", "a heavily built wild ox with backward-curving horns, found mainly in the Old World tropics:", 0.0, "", "https://media.owlbot.info/dictionary/images/kkkkkkw.jpg.400x400_q85_box-0,0,600,600_crop_detail.jpg"));
+            wordDB.wordDAO().addWord(new Word(0,"ostrich","ˈästriCH", "A flightless swift-running African bird with a long neck, long legs, and two toes on each foot. It is the largest living bird, with males reaching a height of up to 2.75 m.", 0.0, "", "https://media.owlbot.info/dictionary/images/gggk.jpg.400x400_q85_box-0,0,225,225_crop_detail.jpg"));
 
         }
         return wordDB.wordDAO().getAllWords();

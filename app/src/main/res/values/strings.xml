@@ -19,4 +19,10 @@
     <string name="searchbar">Search here…</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
+    <string name="word_exists">Word already exists...</string>
+    <string name="response_error">Response Error</string>
+    <string name="word_added">New word added to collection</string>
+    <string name="service_connected">Service is connected</string>
+    <string name="service_disconnected">Service Disconnected</string>
+    <string name="check_word">"Check out this word: "</string>
 </resources>
